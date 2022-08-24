@@ -1,0 +1,176 @@
+%Inicio del tablero
+
+%assert(pair(b,3,3)).
+%assert(pair(b,4,4)).
+%assert(pair(n,4,3)).
+%assert(pair(n,3,4)).
+
+
+fichasb(Lb):- setof(pair(X,Y),pair(b,X,Y),Lb).
+fichasn(Ln):- setof(pair(X,Y),pair(n,X,Y),Ln).
+
+%Desplazamientos Negros
+cadLUN(X,Y):-X2 is X-1,Y1 is Y-1,fichasn(L),member(pair(X,Y),L),cadLUN(X2,Y1);finLUN(X,Y).
+
+cadRUN(X,Y):-X2 is X+1,Y1 is Y-1,fichasn(L),member(pair(X,Y),L),cadRUN(X2,Y1);finRUN(X,Y).
+
+cadUN(X,Y):-X2 is X,Y1 is Y-1,fichasn(L),member(pair(X,Y),L),cadUN(X2,Y1);finUN(X,Y).
+
+
+finLUN(X,Y):-fichasb(L),member(pair(X,Y),L),Y2 is Y+1,X1 is X+1,fichasn(L1),member(pair(X1,Y2),L1).
+
+finUN(X,Y):-fichasb(L),member(pair(X,Y),L),Y2 is Y+1,X1 is X,fichasn(L1),member(pair(X1,Y2),L1).
+
+finRUN(X,Y):-fichasb(L),member(pair(X,Y),L),Y2 is Y+1,X1 is X-1,fichasn(L1),member(pair(X1,Y2),L1).
+
+
+cadLN(X,Y):-X2 is X-1,Y1 is Y,fichasn(L),member(pair(X,Y),L),cadLN(X2,Y1);finLN(X,Y).
+cadRN(X,Y):-X2 is X+1,Y1 is Y,fichasn(L),member(pair(X,Y),L),cadRN(X2,Y1);finRN(X,Y).
+
+finLN(X,Y):-fichasb(L),member(pair(X,Y),L),Y2 is Y,X1 is X+1,fichasn(L1),member(pair(X1,Y2),L1).
+finRN(X,Y):-fichasb(L),member(pair(X,Y),L),Y2 is Y,X1 is X-1,fichasn(L1),member(pair(X1,Y2),L1).
+
+cadLDN(X,Y):-X2 is X-1,Y1 is Y+1,fichasn(L),member(pair(X,Y),L),cadLDN(X2,Y1);finLDN(X,Y).
+
+cadRDN(X,Y):-X2 is X+1,Y1 is Y+1,fichasn(L),member(pair(X,Y),L),cadRDN(X2,Y1);finRDN(X,Y).
+
+cadDN(X,Y):-X2 is X,Y1 is Y+1,fichasn(L),member(pair(X,Y),L),cadDN(X2,Y1);finDN(X,Y).
+
+
+finLDN(X,Y):-fichasb(L),member(pair(X,Y),L),Y2 is Y-1,X1 is X+1,fichasn(L1),member(pair(X1,Y2),L1).
+
+finDN(X,Y):-fichasb(L),member(pair(X,Y),L),Y2 is Y-1,X1 is X,fichasn(L1),member(pair(X1,Y2),L1).
+
+finRDN(X,Y):-fichasb(L),member(pair(X,Y),L),Y2 is Y-1,X1 is X-1,fichasn(L1),member(pair(X1,Y2),L1).
+
+
+
+validoB(X,Y):-
+	not(pair(n,X,Y)),not(pair(b,X,Y)),
+	X1 is X + 1,X2 is X-1,Y1 is Y+1,Y2 is Y-1,(cadUN(X,Y2);
+	cadLUN(X2,Y2);cadRUN(X1,Y2);cadLN(X2,Y);cadRN(X1,Y);cadLDN(X2,Y1);
+	cadDN(X,Y1);cadRDN(X1,Y1)).
+
+
+%Desplazamientos Blancos
+cadLUB(X,Y):-X2 is X-1,Y1 is Y-1,fichasb(L),member(pair(X,Y),L),cadLUB(X2,Y1);finLUB(X,Y).
+
+cadRUB(X,Y):-X2 is X+1,Y1 is Y-1,fichasb(L),member(pair(X,Y),L),cadRUB(X2,Y1);finRUB(X,Y).
+
+cadUB(X,Y):-X2 is X,Y1 is Y-1,fichasb(L),member(pair(X,Y),L),cadUB(X2,Y1);finUB(X,Y).
+
+
+finLUB(X,Y):-fichasn(L),member(pair(X,Y),L),Y2 is Y+1,X1 is X+1,fichasb(L1),member(pair(X1,Y2),L1).
+
+finUB(X,Y):-fichasn(L),member(pair(X,Y),L),Y2 is Y+1,X1 is X,fichasb(L1),member(pair(X1,Y2),L1).
+
+finRUB(X,Y):-fichasn(L),member(pair(X,Y),L),Y2 is Y+1,X1 is X-1,fichasb(L1),member(pair(X1,Y2),L1).
+
+
+cadLB(X,Y):-X2 is X-1,Y1 is Y,fichasb(L),member(pair(X,Y),L),cadLB(X2,Y1);finLB(X,Y).
+cadRB(X,Y):-X2 is X+1,Y1 is Y,fichasb(L),member(pair(X,Y),L),cadRB(X2,Y1);finRB(X,Y).
+
+finLB(X,Y):-fichasn(L),member(pair(X,Y),L),Y2 is Y,X1 is X+1,fichasb(L1),member(pair(X1,Y2),L1).
+finRB(X,Y):-fichasn(L),member(pair(X,Y),L),Y2 is Y,X1 is X-1,fichasb(L1),member(pair(X1,Y2),L1).
+
+cadLDB(X,Y):-X2 is X-1,Y1 is Y+1,fichasb(L),member(pair(X,Y),L),cadLDB(X2,Y1);finLDB(X,Y).
+
+cadRDB(X,Y):-X2 is X+1,Y1 is Y+1,fichasb(L),member(pair(X,Y),L),cadRDB(X2,Y1);finRDB(X,Y).
+
+cadDB(X,Y):-X2 is X,Y1 is Y+1,fichasb(L),member(pair(X,Y),L),cadDB(X2,Y1);finDB(X,Y).
+
+
+finLDB(X,Y):-fichasn(L),member(pair(X,Y),L),Y2 is Y-1,X1 is X+1,fichasb(L1),member(pair(X1,Y2),L1).
+
+finDB(X,Y):-fichasn(L),member(pair(X,Y),L),Y2 is Y-1,X1 is X,fichasb(L1),member(pair(X1,Y2),L1).
+
+finRDB(X,Y):-fichasn(L),member(pair(X,Y),L),Y2 is Y-1,X1 is X-1,fichasb(L1),member(pair(X1,Y2),L1).
+
+
+
+validoN(X,Y):-
+	not(pair(n,X,Y)),not(pair(b,X,Y)),
+	X1 is X + 1,X2 is X-1,Y1 is Y+1,Y2 is Y-1,(cadUB(X,Y2);
+	cadLUB(X2,Y2);cadRUB(X1,Y2);cadLB(X2,Y);cadRB(X1,Y);
+	cadLDB(X2,Y1);cadDB(X,Y1);cadRDB(X1,Y1)).
+
+
+
+%Volteos
+
+voltearaN(X,Y):-assert(pair(n,X,Y)),retract(pair(b,X,Y)).
+voltearaB(X,Y):-assert(pair(b,X,Y)),retract(pair(n,X,Y)).
+
+%Volteos Blancos
+comienzoVolteoLUB(X,Y):-X2 is X-1,Y1 is Y-1,cadLUB(X2,Y1),volteoLUB(X2,Y1).
+volteoLUB(X,Y):-fichasb(L),member(pair(X,Y),L),voltearaN(X,Y),X2 is X-1,Y1 is Y-1,volteoLUB(X2,Y1).
+
+comienzoVolteoRUB(X,Y):-X2 is X+1,Y1 is Y-1,cadRUB(X2,Y1),volteoRUB(X2,Y1).
+volteoRUB(X,Y):-fichasb(L),member(pair(X,Y),L),voltearaN(X,Y),X2 is X+1,Y1 is Y-1,volteoRUB(X2,Y1).
+
+comienzoVolteoUB(X,Y):-X2 is X,Y1 is Y-1,cadUB(X2,Y1),volteoUB(X2,Y1).
+volteoUB(X,Y):-fichasb(L),member(pair(X,Y),L),voltearaN(X,Y),X2 is X,Y1 is Y-1,volteoUB(X2,Y1).
+
+comienzoVolteoRB(X,Y):-X2 is X+1,Y1 is Y,cadRB(X2,Y1),volteoRB(X2,Y1).
+volteoRB(X,Y):-fichasb(L),member(pair(X,Y),L),voltearaN(X,Y),X2 is X+1,Y1 is Y,volteoRB(X2,Y1).
+
+comienzoVolteoLB(X,Y):-X2 is X-1,Y1 is Y,cadLB(X2,Y1),volteoLB(X2,Y1).
+volteoLB(X,Y):-fichasb(L),member(pair(X,Y),L),voltearaN(X,Y),X2 is X-1,Y1 is Y,volteoLB(X2,Y1).
+
+comienzoVolteoLDB(X,Y):-X2 is X-1,Y1 is Y+1,cadLDB(X2,Y1),volteoLDB(X2,Y1).
+volteoLDB(X,Y):-fichasb(L),member(pair(X,Y),L),voltearaN(X,Y),X2 is X-1,Y1 is Y+1,volteoLDB(X2,Y1).
+
+comienzoVolteoDB(X,Y):-X2 is X,Y1 is Y+1,cadDB(X2,Y1),volteoDB(X2,Y1).
+volteoDB(X,Y):-fichasb(L),member(pair(X,Y),L),voltearaN(X,Y),X2 is X,Y1 is Y+1,volteoDB(X2,Y1).
+
+comienzoVolteoRDB(X,Y):-X2 is X+1,Y1 is Y+1,cadRDB(X2,Y1),volteoRDB(X2,Y1).
+volteoRDB(X,Y):-fichasb(L),member(pair(X,Y),L),voltearaN(X,Y),X2 is X+1,Y1 is Y+1,volteoRDB(X2,Y1).
+
+
+%Volteos Negros
+comienzoVolteoLUN(X,Y):-X2 is X-1,Y1 is Y-1,cadLUN(X2,Y1),volteoLUN(X2,Y1).
+volteoLUN(X,Y):-fichasn(L),member(pair(X,Y),L),voltearaB(X,Y),X2 is X-1,Y1 is Y-1,volteoLUN(X2,Y1).
+
+comienzoVolteoRUN(X,Y):-X2 is X+1,Y1 is Y-1,cadRUN(X2,Y1),volteoRUN(X2,Y1).
+volteoRUN(X,Y):-fichasn(L),member(pair(X,Y),L),voltearaB(X,Y),X2 is X+1,Y1 is Y-1,volteoRUN(X2,Y1).
+
+comienzoVolteoUN(X,Y):-X2 is X,Y1 is Y-1,cadUN(X2,Y1),volteoUN(X2,Y1).
+volteoUN(X,Y):-fichasn(L),member(pair(X,Y),L),voltearaB(X,Y),X2 is X,Y1 is Y-1,volteoUN(X2,Y1).
+
+comienzoVolteoRN(X,Y):-X2 is X+1,Y1 is Y,cadRN(X2,Y1),volteoRN(X2,Y1).
+volteoRN(X,Y):-fichasn(L),member(pair(X,Y),L),voltearaB(X,Y),X2 is X+1,Y1 is Y,volteoRN(X2,Y1).
+
+comienzoVolteoLN(X,Y):-X2 is X-1,Y1 is Y,cadLN(X2,Y1),volteoLN(X2,Y1).
+volteoLN(X,Y):-fichasn(L),member(pair(X,Y),L),voltearaB(X,Y),X2 is X-1,Y1 is Y,volteoLN(X2,Y1).
+
+comienzoVolteoLDN(X,Y):-X2 is X-1,Y1 is Y+1,cadLDN(X2,Y1),volteoLDN(X2,Y1).
+volteoLDN(X,Y):-fichasn(L),member(pair(X,Y),L),voltearaB(X,Y),X2 is X-1,Y1 is Y+1,volteoLDN(X2,Y1).
+
+comienzoVolteoDN(X,Y):-X2 is X,Y1 is Y+1,cadDN(X2,Y1),volteoDN(X2,Y1).
+volteoDN(X,Y):-fichasn(L),member(pair(X,Y),L),voltearaB(X,Y),X2 is X,Y1 is Y+1,volteoDN(X2,Y1).
+
+comienzoVolteoRDN(X,Y):-X2 is X+1,Y1 is Y+1,cadRDN(X2,Y1),volteoRDN(X2,Y1).
+volteoRDN(X,Y):-fichasn(L),member(pair(X,Y),L),voltearaB(X,Y),X2 is X+1,Y1 is Y+1,volteoRDN(X2,Y1).
+
+
+all_movesN(L):-
+	L1=[0,1,2,3,4,5,6,7],L2=[0,1,2,3,4,5,6,7],setof(X/Y,(member(X,L1),member(Y,L2),validoN(X,Y)),L).
+
+all_movesB(L):-
+	L1=[0,1,2,3,4,5,6,7],L2=[0,1,2,3,4,5,6,7],setof(X/Y,(member(X,L1),member(Y,L2),validoB(X,Y)),L).
+
+movimientoN(X,Y):-validoN(X,Y),assert(pair(n,X,Y)).
+movimientoB(X,Y):-validoB(X,Y),assert(pair(b,X,Y)).
+
+findeljuego:-(fichasb(L1),fichasn(L2),length(L1,X),length(L2,Y),X+Y=:=64);(all_movesN(L3),all_movesB(L4),length(L3,Z),length(L4,W),Z+W=:=0)
+
+cantNegras(X):-fichasn(L),length(L,X).
+
+cantBlancas(X):-fichasb(L),length(L,X).
+
+%Jugador IA
+juegaIAB(X,Y):-all_movesB(L),random_member(X/Y,L).
+
+juegaIAN(X,Y):-all_movesN(L),random_member(X/Y,L).
+
+
